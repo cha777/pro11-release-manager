@@ -1,0 +1,54 @@
+services:
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile.frontend
+    volumes:
+      - ./frontend:/workspace:delegated
+      - /workspace/node_modules
+    ports:
+      - '8080:8080'
+    networks:
+      - frontend-backend-network
+    depends_on:
+      - backend
+    links:
+      - backend
+    command: sleep infinity
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile.backend
+    volumes:
+      - ./backend:/workspace:delegated
+      - /workspace/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - frontend-backend-network
+      - backend-redis-network
+    depends_on:
+      - redis
+    command: sleep infinity
+
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend-redis-network
+
+networks:
+  frontend-backend-network:
+    driver: bridge
+  backend-redis-network:
+    driver: bridge
+
+volumes:
+  redis-data:

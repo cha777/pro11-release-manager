@@ -1,0 +1,18 @@
+{
+  "name": "pro11-release-manager",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start:frontend": "npm workspace frontend start",
+    "start:backend": "npm workspace backend start",
+    "build:frontend": "npm workspace frontend build",
+    "build:backend": "npm workspace backend build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
