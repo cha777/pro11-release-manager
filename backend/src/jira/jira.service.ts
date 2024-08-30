@@ -74,6 +74,28 @@ export class JiraService {
     }
   }
 
+  async editWorkflow(
+    data: { id: number; workflow: number; comment: string },
+    session: any,
+  ) {
+    if (!session.user || !session.user.email || !session.user.apiToken) {
+      throw new UnauthorizedException(
+        'No valid Jira credentials found in session.',
+      );
+    }
+
+    const result = (
+      await axios.post(`${this.rmBaseUrl}/edit-workflow`, {
+        release_id: data.id,
+        workflow: data.workflow,
+        comment: data.comment,
+        user: session.user.email.replace('directfn', 'Directfn'),
+      })
+    ).data;
+
+    return result;
+  }
+
   private async getDfnRMReleaseList(projectId: string, minDate: Date) {
     try {
       const currentDate = new Date();
