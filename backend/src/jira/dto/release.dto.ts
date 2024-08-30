@@ -17,6 +17,9 @@ export class ReleaseDto {
   releaseDate: string;
 
   @Expose()
+  dfnRmReleaseDate?: string;
+
+  @Expose()
   dfnRmID: string | undefined;
 
   @Expose()
@@ -28,6 +31,10 @@ export class ReleaseDto {
 
   @Expose()
   workflow: string;
+
+  @Expose()
+  @Transform(({ obj }) => obj.workflow_id)
+  workflowId: number;
 
   @Expose()
   @Transform(({ obj }) => obj.uploaded_by)
